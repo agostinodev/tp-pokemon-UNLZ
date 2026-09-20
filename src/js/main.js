@@ -1,6 +1,7 @@
 import { getPokemon, getPokemons} from './services/pokemonsService.js';
 import { showSpinner, hideSpinner } from './components/renderSpinner.js';
 import { renderCards, renderCard } from './components/renderCards.js';
+import { sweetAlert } from './helpers/sweetAlert.js';
 
 const $inputSearch = document.querySelector('#input-search');
 const $btnSearch = document.querySelector('#btn-search');
@@ -14,10 +15,7 @@ const loadData = async(getData, render) =>{
         const data = await getData();
         $containerCards.innerHTML = render(data);
     } catch (error) {
-        Swal.fire({
-            text: `${error.message}`,
-            icon: "error"
-        });
+        sweetAlert(error.message, error)
     }finally{
         hideSpinner();
     }
@@ -33,6 +31,9 @@ const renderPokemon = (name) =>{
 
 $btnSearch.addEventListener('click', () => {
     const input = $inputSearch.value;
+    if (!input) {
+        return;
+    }
     renderPokemon(input);
     $inputSearch.value = '';
 })

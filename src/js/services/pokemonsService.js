@@ -11,7 +11,7 @@ export const getPokemons = async () => {
         
         const res = await fetch(`${BASE_URL}${i}`);
 
-        if(!res.ok) throw new Error("No se puede obtener pokemon");
+        if(!res.ok) throw new Error("No se pueden obtener pokemons");
 
         pokemons.push(await res.json());
         
