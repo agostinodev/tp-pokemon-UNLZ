@@ -7,12 +7,12 @@ const $btnSearch = document.querySelector('#btn-search');
 const $containerCards = document.querySelector('#container-cards');
 const $btnClean = document.querySelector('#btn-clean');
 
-const initApp = async() =>{
+const loadData = async(getData, render) =>{
     try {        
         $containerCards.innerHTML = '';
         showSpinner();
-        const data = await getPokemons();
-        $containerCards.innerHTML = renderCards(data);
+        const data = await getData();
+        $containerCards.innerHTML = render(data);
     } catch (error) {
         Swal.fire({
             text: `${error.message}`,
@@ -23,20 +23,12 @@ const initApp = async() =>{
     }
 }
 
-const renderPokemon = async(name) =>{
-        try {        
-        $containerCards.innerHTML = '';
-        showSpinner();
-        const data = await getPokemon(name);
-        $containerCards.innerHTML = renderCard(data);
-    } catch (error) {
-        Swal.fire({
-            text: `${error.message}`,
-            icon: "error"
-        });
-    }finally{
-        hideSpinner();
-    }
+const initApp = () =>{
+    loadData(getPokemons, renderCards);
+}
+
+const renderPokemon = (name) =>{
+    loadData(() => getPokemon(name), renderCard);
 }
 
 $btnSearch.addEventListener('click', () => {
